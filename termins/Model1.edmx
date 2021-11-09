@@ -1,0 +1,510 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище termsModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="century">
+          <Key>
+            <PropertyRef Name="centuryid" />
+          </Key>
+          <Property Name="centuryid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="era">
+          <Key>
+            <PropertyRef Name="eraid" />
+          </Key>
+          <Property Name="eraid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="science">
+          <Key>
+            <PropertyRef Name="scienceid" />
+          </Key>
+          <Property Name="scienceid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sec">
+          <Key>
+            <PropertyRef Name="secid" />
+          </Key>
+          <Property Name="secid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="section" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="source">
+          <Key>
+            <PropertyRef Name="sourceid" />
+          </Key>
+          <Property Name="sourceid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="source" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="term">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar(max)" Nullable="false" />
+          <Property Name="meaning" Type="varchar(max)" Nullable="false" />
+          <Property Name="url" Type="varchar(max)" Nullable="false" />
+          <Property Name="scienceid" Type="int" Nullable="false" />
+          <Property Name="sourceid" Type="int" Nullable="false" />
+          <Property Name="centuryid" Type="int" Nullable="false" />
+          <Property Name="eraid" Type="int" Nullable="false" />
+          <Property Name="secid" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_term_century">
+          <End Role="century" Type="Self.century" Multiplicity="1" />
+          <End Role="term" Type="Self.term" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="century">
+              <PropertyRef Name="centuryid" />
+            </Principal>
+            <Dependent Role="term">
+              <PropertyRef Name="centuryid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_term_era">
+          <End Role="era" Type="Self.era" Multiplicity="1" />
+          <End Role="term" Type="Self.term" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="era">
+              <PropertyRef Name="eraid" />
+            </Principal>
+            <Dependent Role="term">
+              <PropertyRef Name="eraid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_term_science">
+          <End Role="science" Type="Self.science" Multiplicity="1" />
+          <End Role="term" Type="Self.term" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="science">
+              <PropertyRef Name="scienceid" />
+            </Principal>
+            <Dependent Role="term">
+              <PropertyRef Name="scienceid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_term_sec">
+          <End Role="sec" Type="Self.sec" Multiplicity="1" />
+          <End Role="term" Type="Self.term" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sec">
+              <PropertyRef Name="secid" />
+            </Principal>
+            <Dependent Role="term">
+              <PropertyRef Name="secid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_term_source">
+          <End Role="source" Type="Self.source" Multiplicity="1" />
+          <End Role="term" Type="Self.term" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="source">
+              <PropertyRef Name="sourceid" />
+            </Principal>
+            <Dependent Role="term">
+              <PropertyRef Name="sourceid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="Хранилище termsModelContainer">
+          <EntitySet Name="century" EntityType="Self.century" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="era" EntityType="Self.era" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="science" EntityType="Self.science" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sec" EntityType="Self.sec" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="source" EntityType="Self.source" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="term" EntityType="Self.term" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_term_century" Association="Self.FK_term_century">
+            <End Role="century" EntitySet="century" />
+            <End Role="term" EntitySet="term" />
+          </AssociationSet>
+          <AssociationSet Name="FK_term_era" Association="Self.FK_term_era">
+            <End Role="era" EntitySet="era" />
+            <End Role="term" EntitySet="term" />
+          </AssociationSet>
+          <AssociationSet Name="FK_term_science" Association="Self.FK_term_science">
+            <End Role="science" EntitySet="science" />
+            <End Role="term" EntitySet="term" />
+          </AssociationSet>
+          <AssociationSet Name="FK_term_sec" Association="Self.FK_term_sec">
+            <End Role="sec" EntitySet="sec" />
+            <End Role="term" EntitySet="term" />
+          </AssociationSet>
+          <AssociationSet Name="FK_term_source" Association="Self.FK_term_source">
+            <End Role="source" EntitySet="source" />
+            <End Role="term" EntitySet="term" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="termsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="century">
+          <Key>
+            <PropertyRef Name="centuryid" />
+          </Key>
+          <Property Name="centuryid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="term" Relationship="Self.FK_term_century" FromRole="century" ToRole="term" />
+        </EntityType>
+        <EntityType Name="era">
+          <Key>
+            <PropertyRef Name="eraid" />
+          </Key>
+          <Property Name="eraid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="term" Relationship="Self.FK_term_era" FromRole="era" ToRole="term" />
+        </EntityType>
+        <EntityType Name="science">
+          <Key>
+            <PropertyRef Name="scienceid" />
+          </Key>
+          <Property Name="scienceid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="term" Relationship="Self.FK_term_science" FromRole="science" ToRole="term" />
+        </EntityType>
+        <EntityType Name="sec">
+          <Key>
+            <PropertyRef Name="secid" />
+          </Key>
+          <Property Name="secid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="section" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="term" Relationship="Self.FK_term_sec" FromRole="sec" ToRole="term" />
+        </EntityType>
+        <EntityType Name="source">
+          <Key>
+            <PropertyRef Name="sourceid" />
+          </Key>
+          <Property Name="sourceid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="source1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="term" Relationship="Self.FK_term_source" FromRole="source" ToRole="term" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="term">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="meaning" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="url" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="scienceid" Type="Int32" Nullable="false" />
+          <Property Name="sourceid" Type="Int32" Nullable="false" />
+          <Property Name="centuryid" Type="Int32" Nullable="false" />
+          <Property Name="eraid" Type="Int32" Nullable="false" />
+          <Property Name="secid" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="century" Relationship="Self.FK_term_century" FromRole="term" ToRole="century" />
+          <NavigationProperty Name="era" Relationship="Self.FK_term_era" FromRole="term" ToRole="era" />
+          <NavigationProperty Name="science" Relationship="Self.FK_term_science" FromRole="term" ToRole="science" />
+          <NavigationProperty Name="sec" Relationship="Self.FK_term_sec" FromRole="term" ToRole="sec" />
+          <NavigationProperty Name="source" Relationship="Self.FK_term_source" FromRole="term" ToRole="source" />
+        </EntityType>
+        <Association Name="FK_term_century">
+          <End Role="century" Type="Self.century" Multiplicity="1" />
+          <End Role="term" Type="Self.term" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="century">
+              <PropertyRef Name="centuryid" />
+            </Principal>
+            <Dependent Role="term">
+              <PropertyRef Name="centuryid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_term_era">
+          <End Role="era" Type="Self.era" Multiplicity="1" />
+          <End Role="term" Type="Self.term" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="era">
+              <PropertyRef Name="eraid" />
+            </Principal>
+            <Dependent Role="term">
+              <PropertyRef Name="eraid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_term_science">
+          <End Role="science" Type="Self.science" Multiplicity="1" />
+          <End Role="term" Type="Self.term" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="science">
+              <PropertyRef Name="scienceid" />
+            </Principal>
+            <Dependent Role="term">
+              <PropertyRef Name="scienceid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_term_sec">
+          <End Role="sec" Type="Self.sec" Multiplicity="1" />
+          <End Role="term" Type="Self.term" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sec">
+              <PropertyRef Name="secid" />
+            </Principal>
+            <Dependent Role="term">
+              <PropertyRef Name="secid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_term_source">
+          <End Role="source" Type="Self.source" Multiplicity="1" />
+          <End Role="term" Type="Self.term" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="source">
+              <PropertyRef Name="sourceid" />
+            </Principal>
+            <Dependent Role="term">
+              <PropertyRef Name="sourceid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="termsEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="century" EntityType="Self.century" />
+          <EntitySet Name="era" EntityType="Self.era" />
+          <EntitySet Name="science" EntityType="Self.science" />
+          <EntitySet Name="sec" EntityType="Self.sec" />
+          <EntitySet Name="source" EntityType="Self.source" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="term" EntityType="Self.term" />
+          <AssociationSet Name="FK_term_century" Association="Self.FK_term_century">
+            <End Role="century" EntitySet="century" />
+            <End Role="term" EntitySet="term" />
+          </AssociationSet>
+          <AssociationSet Name="FK_term_era" Association="Self.FK_term_era">
+            <End Role="era" EntitySet="era" />
+            <End Role="term" EntitySet="term" />
+          </AssociationSet>
+          <AssociationSet Name="FK_term_science" Association="Self.FK_term_science">
+            <End Role="science" EntitySet="science" />
+            <End Role="term" EntitySet="term" />
+          </AssociationSet>
+          <AssociationSet Name="FK_term_sec" Association="Self.FK_term_sec">
+            <End Role="sec" EntitySet="sec" />
+            <End Role="term" EntitySet="term" />
+          </AssociationSet>
+          <AssociationSet Name="FK_term_source" Association="Self.FK_term_source">
+            <End Role="source" EntitySet="source" />
+            <End Role="term" EntitySet="term" />
+          </AssociationSet>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(termsModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(termsModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+        </EntityContainer>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище termsModelContainer" CdmEntityContainer="termsEntities1">
+          <EntitySetMapping Name="century">
+            <EntityTypeMapping TypeName="termsModel.century">
+              <MappingFragment StoreEntitySet="century">
+                <ScalarProperty Name="centuryid" ColumnName="centuryid" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="era">
+            <EntityTypeMapping TypeName="termsModel.era">
+              <MappingFragment StoreEntitySet="era">
+                <ScalarProperty Name="eraid" ColumnName="eraid" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="science">
+            <EntityTypeMapping TypeName="termsModel.science">
+              <MappingFragment StoreEntitySet="science">
+                <ScalarProperty Name="scienceid" ColumnName="scienceid" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sec">
+            <EntityTypeMapping TypeName="termsModel.sec">
+              <MappingFragment StoreEntitySet="sec">
+                <ScalarProperty Name="secid" ColumnName="secid" />
+                <ScalarProperty Name="section" ColumnName="section" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="source">
+            <EntityTypeMapping TypeName="termsModel.source">
+              <MappingFragment StoreEntitySet="source">
+                <ScalarProperty Name="sourceid" ColumnName="sourceid" />
+                <ScalarProperty Name="source1" ColumnName="source" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="termsModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="term">
+            <EntityTypeMapping TypeName="termsModel.term">
+              <MappingFragment StoreEntitySet="term">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="meaning" ColumnName="meaning" />
+                <ScalarProperty Name="url" ColumnName="url" />
+                <ScalarProperty Name="scienceid" ColumnName="scienceid" />
+                <ScalarProperty Name="sourceid" ColumnName="sourceid" />
+                <ScalarProperty Name="centuryid" ColumnName="centuryid" />
+                <ScalarProperty Name="eraid" ColumnName="eraid" />
+                <ScalarProperty Name="secid" ColumnName="secid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="Хранилище termsModel.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="Хранилище termsModel.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="Хранилище termsModel.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="Хранилище termsModel.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="termsModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="Хранилище termsModel.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="termsModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="Хранилище termsModel.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="Хранилище termsModel.sp_upgraddiagrams" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
