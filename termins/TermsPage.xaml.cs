@@ -24,10 +24,39 @@ namespace termins
         public TermsPage()
         {
             InitializeComponent();
-            var currentTerm = termsEntities1.GetContext().term.ToList();
-            DGridterms.ItemsSource = termsEntities1.GetContext().term.ToList();
+
+            var scienceTypes = termsEntities2.GetContext().sciences.ToList();
+            scienceTypes.Insert(0, new science { name = "Все типы" }); 
+
+            ComboType.ItemsSource = scienceTypes;
+            ComboType.SelectedIndex = 0;
+
+            var sourceTypes = termsEntities2.GetContext().sources.ToList();
+            sourceTypes.Insert(0, new source { source1 = "Все ресурсы" });
+
+            ComboSource.ItemsSource = sourceTypes;
+            ComboSource.SelectedIndex = 0;
+
+
+            Updateterms();
             
+
         }
+
+        private void Updateterms()
+        {
+            List<term> currentTerms = termsEntities2.GetContext().terms.ToList();
+            //TBoxSearch
+            currentTerms = currentTerms.Where(p => p.name.ToLower().Contains(TBoxSearch.Text.ToLower())).ToList();
+            if (ComboType.SelectedIndex > 0)
+                currentTerms = currentTerms.Where(p => p.science == ComboType.SelectedItem as science).ToList();
+            if (ComboSource.SelectedIndex > 0)
+                currentTerms = currentTerms.Where(p => p.source == ComboSource.SelectedItem as source).ToList();
+
+            DGridterms.ItemsSource = currentTerms;
+
+        }
+
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -52,11 +81,11 @@ namespace termins
             { 
                 try
                 {
-                    termsEntities1.GetContext().term.RemoveRange(termsForRemoving);
-                    termsEntities1.GetContext().SaveChanges();
+                    termsEntities2.GetContext().terms.RemoveRange(termsForRemoving);
+                    termsEntities2.GetContext().SaveChanges();
                     MessageBox.Show("Данные были удалены !");
 
-                    DGridterms.ItemsSource = termsEntities1.GetContext().term.ToList();
+                    DGridterms.ItemsSource = termsEntities2.GetContext().terms.ToList();
                 }
                 catch (Exception ex)
                 {
@@ -76,12 +105,27 @@ namespace termins
             if (Visibility == Visibility.Visible)
        
         {
-                termsEntities1.GetContext().ChangeTracker.Entries().ToList().ForEach(p => p.Reload());
-                DGridterms.ItemsSource = termsEntities1.GetContext().term.ToList();
+                termsEntities2.GetContext().ChangeTracker.Entries().ToList().ForEach(p => p.Reload());
+                DGridterms.ItemsSource = termsEntities2.GetContext().terms.ToList();
 
         }
 
+
+
+
         }
-   
+
+        private void TBoxSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Updateterms();
+
+
+        }
+
+        private void ComboType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Updateterms();
+        }
+       
     }
 }

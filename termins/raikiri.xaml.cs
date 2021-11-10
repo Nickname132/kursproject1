@@ -23,7 +23,7 @@ namespace termins
         public raikiri()
         {
             InitializeComponent();
-            var currentTerms = termsEntities1.GetContext().term.ToList();
+            var currentTerms = termsEntities2.GetContext().terms.ToList();
             LViewTerm.ItemsSource = currentTerms;
         }
     }

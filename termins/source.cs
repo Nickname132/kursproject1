@@ -17,13 +17,13 @@ namespace termins
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public source()
         {
-            this.term = new HashSet<term>();
+            this.terms = new HashSet<term>();
         }
     
         public int sourceid { get; set; }
         public string source1 { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<term> term { get; set; }
+        public virtual ICollection<term> terms { get; set; }
     }
 }

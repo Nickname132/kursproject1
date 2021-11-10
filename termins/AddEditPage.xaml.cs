@@ -31,11 +31,11 @@ namespace termins
 
             DataContext = _currentTerm;
 
-            ComboScience.ItemsSource = termsEntities1.GetContext().science.ToList();
-            ComboSec.ItemsSource = termsEntities1.GetContext().sec.ToList();
-            ComboSource.ItemsSource = termsEntities1.GetContext().source.ToList();
-            ComboEra.ItemsSource = termsEntities1.GetContext().era.ToList();
-            ComboCen.ItemsSource = termsEntities1.GetContext().century.ToList();
+            ComboScience.ItemsSource = termsEntities2.GetContext().sciences.ToList();
+            ComboSec.ItemsSource = termsEntities2.GetContext().secs.ToList();
+            ComboSource.ItemsSource = termsEntities2.GetContext().sources.ToList();
+            ComboEra.ItemsSource = termsEntities2.GetContext().eras.ToList();
+            ComboCen.ItemsSource = termsEntities2.GetContext().centuries.ToList();
         }
 
         private void BtnSave_Click(object sender,RoutedEventArgs e)
@@ -71,11 +71,11 @@ namespace termins
             }
 
             if (_currentTerm.id == 0)
-                termsEntities1.GetContext().term.Add(_currentTerm);
+                termsEntities2.GetContext().terms.Add(_currentTerm);
               
             try
             {
-                termsEntities1.GetContext().SaveChanges();
+                termsEntities2.GetContext().SaveChanges();
                 MessageBox.Show("Информация сохранена");
             }
             catch (Exception ex)
